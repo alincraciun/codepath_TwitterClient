@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
@@ -100,7 +99,6 @@ public class TimeLineActivity extends AppCompatActivity {
         client = TwitterApplication.getRestClient();      // singleton
         populateTimeLine();
         setupDetailListener();
-        setupReplyListener();
     }
 
     private Boolean checkNetwork() {
@@ -188,64 +186,24 @@ public class TimeLineActivity extends AppCompatActivity {
     private void setupDetailListener() {
         lvTweets.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
-                    int position;
-                    long tid;
                     @Override
                     public void onItemClick(AdapterView<?> adapter, View item, int pos, long id) {
-                        position = pos;
-                        tid = id;
-                        final TextView tvBody = (TextView) findViewById(R.id.tvBody);
-                        tvBody.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent i = new Intent(TimeLineActivity.this, TweetDetailActivity.class);
-                                i.putExtra("pos", position);
-                                i.putExtra("id", tid);
-                                i.putExtra("tid", tweets.get(position).getId());
-                                i.putExtra("body", tweets.get(position).getBody());
-                                i.putExtra("created_at", tweets.get(position).getCreatedTimeStamp());
-                                i.putExtra("favourites", String.valueOf(tweets.get(position).getFavourites_count()));
-                                i.putExtra("retweets",  String.valueOf(tweets.get(position).getRetweet_count()));
-                                i.putExtra("userName", tweets.get(position).getUser().getName());
-                                i.putExtra("profileImage", tweets.get(position).getUser().getProfileImageUrl());
-                                i.putExtra("screenName", tweets.get(position).getUser().getScreenName());
-                                startActivity(i);
-                            }
-                        });
-
+                        Intent i = new Intent(TimeLineActivity.this, TweetDetailActivity.class);
+                        i.putExtra("pos", pos);
+                        i.putExtra("id", id);
+                        i.putExtra("tid", tweets.get(pos).getId());
+                        i.putExtra("body", tweets.get(pos).getBody());
+                        i.putExtra("created_at", tweets.get(pos).getCreatedTimeStamp());
+                        i.putExtra("favourites", tweets.get(pos).getFavourites_count());
+                        i.putExtra("retweets",  String.valueOf(tweets.get(pos).getRetweet_count()));
+                        i.putExtra("userName", tweets.get(pos).getUser().getName());
+                        i.putExtra("profileImage", tweets.get(pos).getUser().getProfileImageUrl());
+                        i.putExtra("screenName", tweets.get(pos).getUser().getScreenName());
+                        //i.putExtra("media_url", tweets.get(0).getMedia_url());
+                        startActivity(i);
                     }
                 }
         );
 
     }
-
-    private void setupReplyListener() {
-        lvTweets.setOnItemClickListener(
-                new AdapterView.OnItemClickListener() {
-                    int position;
-                    long tid;
-                    @Override
-                    public void onItemClick(AdapterView<?> adapter, View item, int pos, long id) {
-                        position = pos;
-                        tid = id;
-                        final TextView tvReply = (TextView) findViewById(R.id.tvReply);
-                        tvReply.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent i = new Intent(TimeLineActivity.this, ComposeMessageActivity.class);
-                                i.putExtra("pos", position);
-                                i.putExtra("id", tid);
-                                i.putExtra("body", tweets.get(position).getId());
-                                i.putExtra("tid", tweets.get(position).getId());
-                                startActivity(i);
-                            }
-                        });
-                    }
-                }
-        );
-    }
-
-
-
-
 }

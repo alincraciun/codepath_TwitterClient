@@ -26,11 +26,12 @@ public class Tweet {
     private String body;
     private long uid; // tweet id
     private User user;
+    private Media media;
     private String createdAt;
     private int retweet_count = 0;
     private int favourites_count = 0;
-    private String mUrl;
     private String createdTimeStamp;
+    private String media_url;
 
     public String getBody() {
         return body;
@@ -38,6 +39,10 @@ public class Tweet {
 
     public long getUid() {
         return uid;
+    }
+
+    public Media getMedia() {
+        return media;
     }
 
     public User getUser() {
@@ -62,6 +67,10 @@ public class Tweet {
         return createdTimeStamp;
     }
 
+    public String getMedia_url() {
+        return media_url;
+    }
+
     //Deserialize the JSON
     public static Tweet fromJSON(JSONObject jsonObject) {
         Tweet tweet = new Tweet();
@@ -75,8 +84,10 @@ public class Tweet {
             tweet.retweet_count = jsonObject.optInt("retweet_count");
             tweet.favourites_count = jsonObject.optInt("favorite_count");
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
-
+            //tweet.media = Media.fromJSON(jsonObject.getJSONObject("entities"));
+            //tweet.media_url = jsonObject.getJSONObject("entities").optJSONArray("media").optJSONObject(0).optString("media_url");
             tweet.id = jsonObject.getLong("id");
+
             //tweet.mUrl = jsonObject.getString("");
             //  Log.d("FAV::  ", String.valueOf(jsonObject.optInt("favorite_count")));
         } catch (JSONException e) {

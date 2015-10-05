@@ -2,6 +2,7 @@ package com.codepath.apps.tweetTweet;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -47,13 +48,14 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         TextView tvLapseTime;
         TextView tvRetweets;
         TextView tvFavorites;
+        TextView tvReply;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // 1. Get the tweet
-        Tweet tweet = getItem(position);
+        final Tweet tweet = getItem(position);
         // 2. Find or inflate the template
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
@@ -62,6 +64,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             vh.ivProfileImage = (DynamicHeightImageView) convertView.findViewById(R.id.ivProfileImage);
             vh.tvUserName = (TextView) convertView.findViewById(R.id.tvuserName);
             vh.tvBody = (LinkifiedTextView) convertView.findViewById(R.id.tvBody);
+            vh.tvReply = (TextView) convertView.findViewById(R.id.tvReply);
             vh.tvProfileName = (TextView) convertView.findViewById(R.id.tvProfileName);
             vh.tvLapseTime = (TextView) convertView.findViewById(R.id.tvLapseTime);
             vh.tvRetweets = (TextView) convertView.findViewById(R.id.tvRetweets);
@@ -112,6 +115,33 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         //loadBitmap(tweet.getUser().getProfileImageUrl());
         String biggerImage = tweet.getUser().getProfileImageUrl().replace("_normal.", "_bigger.");
         Picasso.with(getContext()).load(biggerImage).into(vh.ivProfileImage);
+
+        vh.tvBody.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), TweetDetailActivity.class);
+                i.putExtra("tid", tweet.getId());
+                i.putExtra("body", tweet.getBody());
+                i.putExtra("created_at", tweet.getCreatedTimeStamp());
+                i.putExtra("favourites", String.valueOf(tweet.getFavourites_count()));
+                i.putExtra("retweets", String.valueOf(tweet.getRetweet_count()));
+                i.putExtra("userName", tweet.getUser().getName());
+                i.putExtra("profileImage", tweet.getUser().getProfileImageUrl());
+                i.putExtra("screenName", tweet.getUser().getScreenName());
+                getContext().startActivity(i);
+            }
+        });
+
+        vh.tvReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), ComposeMessageActivity.class);
+                i.putExtra("tid", tweet.getId());
+                i.putExtra("body", "@" + tweet.getUser().getScreenName() + " ");
+                i.putExtra("title", tweet.getUser().getName());
+                getContext().startActivity(i);
+            }
+        });
 
         return convertView;
     }

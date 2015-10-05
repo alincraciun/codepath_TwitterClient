@@ -33,6 +33,7 @@ public class TweetDetailActivity extends AppCompatActivity {
         }
 
         DynamicHeightImageView ivProfile = (DynamicHeightImageView) findViewById(R.id.ivdProfileImage);
+        //DynamicHeightImageView ivMedia = (DynamicHeightImageView) findViewById(R.id.ivMedia);
         TextView tvUserName = (TextView) findViewById(R.id.tvdUserName);
         TextView tvProfileName = (TextView) findViewById(R.id.tvdProfileName);
         TextView tvBody = (TextView) findViewById(R.id.tvdBody);
@@ -56,9 +57,11 @@ public class TweetDetailActivity extends AppCompatActivity {
         tvBody.setText(getIntent().getStringExtra("body"));
         tvCreatedDate.setText(getIntent().getStringExtra("created_at"));
         tvRetweets.setText(getIntent().getStringExtra("retweets") + " " + getResources().getString(R.string.Retweets));
-        tvFavorites.setText("999" + " " + getResources().getString(R.string.favorites));
+        tvFavorites.setText(getIntent().getIntExtra("favourites", Integer.valueOf(0)) + " " + getResources().getString(R.string.favorites));
 
         Picasso.with(this).load(getIntent().getStringExtra("profileImage")).into(ivProfile);
+
+        //Picasso.with(this).load(getIntent().getStringExtra("media_url")).into(ivMedia);
     }
 
     @Override

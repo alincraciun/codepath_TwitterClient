@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -32,6 +33,7 @@ public class ComposeMessageActivity extends AppCompatActivity {
     TextView tvCharCounter;
     private TwitterClient client;
     int charCount = 0;
+    private long replyMessageId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class ComposeMessageActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
             getSupportActionBar().setElevation(0);
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
@@ -50,6 +52,11 @@ public class ComposeMessageActivity extends AppCompatActivity {
         final EditText etMessageBody = (EditText) findViewById(R.id.etMessageBody);
         if(getIntent().getStringExtra("body") != null) {
             etMessageBody.setText(getIntent().getStringExtra("body"));
+        }
+        if(getIntent().getLongExtra("tid", 0) > 0) {
+            replyMessageId = getIntent().getLongExtra("tid", 0);
+            getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#55acee\">" + "In reply to " + getIntent().getStringExtra("title") + "</font>"));
+            etMessageBody.setSelection(getIntent().getStringExtra("body").length());
         }
         tvCharCounter = (TextView) findViewById(R.id.tvCharCounter);
         final Button btTweet = (Button) findViewById(R.id.btTweet);
@@ -87,6 +94,7 @@ public class ComposeMessageActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         Intent i = new Intent();
+                        //if(replyMessageId != 0) { i.putExtra("messageId", replyMessageId); }
                         setResult(RESULT_OK, i);
                         Log.d("MSG:: --> ", "Message posted successfully!");
                         finish();
@@ -98,7 +106,7 @@ public class ComposeMessageActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "I already posted this message!", Toast.LENGTH_SHORT).show();
                         }
                     }
-                }, message);
+                }, message, replyMessageId);
             }
         });
 
