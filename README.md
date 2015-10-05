@@ -50,8 +50,8 @@ Here's a walkthrough of implemented user stories:
 
 <img src='raw/superPics_userStory2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
+<img src='raw/superPics_userStory20.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-<img src='raw/superPics_userStory2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 * User can reply to a message and view reply in home timeline.
 
