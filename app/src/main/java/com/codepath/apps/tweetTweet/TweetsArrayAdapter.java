@@ -1,6 +1,7 @@
 package com.codepath.apps.tweetTweet;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -115,7 +116,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         //loadBitmap(tweet.getUser().getProfileImageUrl());
         String biggerImage = tweet.getUser().getProfileImageUrl().replace("_normal.", "_bigger.");
         Picasso.with(getContext()).load(biggerImage).into(vh.ivProfileImage);
-
+/*
         vh.tvBody.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +131,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
                 i.putExtra("screenName", tweet.getUser().getScreenName());
                 getContext().startActivity(i);
             }
-        });
+        });*/
 
         vh.tvReply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +140,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
                 i.putExtra("tid", tweet.getId());
                 i.putExtra("body", "@" + tweet.getUser().getScreenName() + " ");
                 i.putExtra("title", tweet.getUser().getName());
-                getContext().startActivity(i);
+                ((Activity)getContext()).startActivityForResult(i, 100);
             }
         });
 

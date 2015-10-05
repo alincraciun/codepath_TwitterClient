@@ -3,9 +3,7 @@ package com.codepath.apps.tweetTweet;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +20,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.codepath.apps.tweetTweet.R;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -88,15 +85,15 @@ public class ComposeMessageActivity extends AppCompatActivity {
         btTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String message = etMessageBody.getText().toString();
+                final String message = etMessageBody.getText().toString();
                 Log.d("MSG::", message);
                 client.postMessage(new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         Intent i = new Intent();
+                        i.putExtra("newMessage", message);
                         //if(replyMessageId != 0) { i.putExtra("messageId", replyMessageId); }
                         setResult(RESULT_OK, i);
-                        Log.d("MSG:: --> ", "Message posted successfully!");
                         finish();
                     }
 
@@ -152,4 +149,5 @@ public class ComposeMessageActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

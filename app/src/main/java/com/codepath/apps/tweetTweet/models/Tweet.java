@@ -9,8 +9,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 import com.codepath.apps.tweetTweet.models.OfflineTweets.Tweets;
 
@@ -24,8 +28,8 @@ public class Tweet {
     //list out the attributes
     private long id;
     private String body;
-    private long uid; // tweet id
     private User user;
+    private long uid;
     private Media media;
     private String createdAt;
     private int retweet_count = 0;
@@ -37,16 +41,53 @@ public class Tweet {
         return body;
     }
 
-    public long getUid() {
-        return uid;
-    }
-
     public Media getMedia() {
         return media;
     }
 
     public User getUser() {
         return user;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setMedia(Media media) {
+        this.media = media;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setRetweet_count(int retweet_count) {
+        this.retweet_count = retweet_count;
+    }
+
+    public void setFavourites_count(int favourites_count) {
+        this.favourites_count = favourites_count;
+    }
+
+    public void setCreatedTimeStamp(String createdTimeStamp) {
+        this.createdTimeStamp = createdTimeStamp;
     }
 
     public String getCreatedAt() {
@@ -78,7 +119,6 @@ public class Tweet {
         // Extract the values from the JSON and store them
         try {
             tweet.body = jsonObject.getString("text");
-            tweet.uid = jsonObject.getLong("id");
             tweet.createdAt = Utilities.timeAgoFromDate(jsonObject.getString("created_at"));
             tweet.createdTimeStamp = jsonObject.getString("created_at");
             tweet.retweet_count = jsonObject.optInt("retweet_count");
@@ -144,7 +184,7 @@ public class Tweet {
         addTweet.favourites_count = record.favourites_count;
         addTweet.retweet_count = record.retweet_count;
         addTweet.text = record.body;
-        addTweet.uid = record.uid;
+        addTweet.uid = record.user.getUid();
         addTweet.userName = record.user.getName();
         addTweet.screen_name = record.user.getScreenName();
         addTweet.profile_image_url = record.user.getProfileImageUrl();
@@ -178,5 +218,21 @@ public class Tweet {
 
 
         return tweets;
+    }
+
+    public static Tweet newTweetFromMessage(String message) {
+        Tweet tweet = new Tweet();
+        User user = new User();
+        Random randomnLong = new Random();
+        SimpleDateFormat current = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.ENGLISH);
+
+        tweet.setBody(message);
+        tweet.setCreatedTimeStamp(current.format(new Date()).toString());
+        tweet.setFavourites_count(0);
+        tweet.setId(randomnLong.nextLong());
+        tweet.setRetweet_count(0);
+        tweet.setUser(user.currentUser());
+
+        return tweet;
     }
 }

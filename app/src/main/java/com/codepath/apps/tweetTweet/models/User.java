@@ -45,4 +45,29 @@ public class User {
     }
 
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
+
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public User currentUser() {
+        User user = new User();
+        user.setUid(Long.valueOf("3723831794"));
+        user.setName("uberAlin");
+        user.setProfileImageUrl("https://abs.twimg.com/sticky/default_profile_images/default_profile_4_normal.png");
+        user.setScreenName("uberTweet");
+
+        return user;
+    }
 }
