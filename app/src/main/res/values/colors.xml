@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="light_grey">#e1e8ed</color>
+    <color name="plain_grey">#66757f</color>
+    <color name="normal_grey">#ccd6dd</color>
+    <color name="twitter_azure">#55acee</color>
+    <color name="twitter_blue">#292f33</color>
+    <color name="red">#FF0000</color>
+
+</resources>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="10dp" android:descendantFocusability="blocksDescendants">
+
+    <com.codepath.apps.tweetTweet.utils.DynamicHeightImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivProfileImage"
+        android:adjustViewBounds="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User"
+        android:id="@+id/tvuserName"
+        android:textSize="12dp"
+        android:layout_alignParentTop="true"
+        android:textColor="@android:color/black"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:layout_marginLeft="3dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp" />
+
+    <com.codepath.apps.tweetTweet.utils.LinkifiedTextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Body"
+        android:id="@+id/tvBody"
+        android:textColor="@android:color/black"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:layout_below="@+id/tvuserName"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="3dp"
+        android:textSize="12dp"
+        android:autoLink="all"
+        android:linksClickable="true"
+        android:onClick="setupDetailListener"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_name"
+        android:textColor="@color/plain_grey"
+        android:id="@+id/tvProfileName"
+        android:layout_toRightOf="@+id/tvuserName"
+        android:layout_toEndOf="@+id/tvuserName"
+        android:layout_alignBaseline="@+id/tvuserName"
+        android:layout_marginLeft="3dp"
+        android:textSize="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/plain_grey"
+        android:id="@+id/tvReply"
+        android:layout_below="@+id/tvBody"
+        android:layout_alignLeft="@id/tvBody"
+        android:drawableLeft="@drawable/reply"
+        android:onClick="setupReplyListener"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/plain_grey"
+        android:text="0"
+        android:textSize="12dp"
+        android:id="@+id/tvRetweets"
+        android:layout_marginLeft="45dp"
+        android:drawableLeft="@drawable/retweet"
+        android:layout_below="@+id/tvBody"
+        android:layout_toRightOf="@+id/tvReply"
+        android:layout_toEndOf="@+id/tvReply"
+        android:layout_alignBottom="@+id/tvReply"
+        android:layout_alignTop="@id/tvReply"
+        android:paddingLeft="2dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/plain_grey"
+        android:textSize="12dp"
+        android:text="0"
+        android:id="@+id/tvFavorites"
+        android:layout_marginLeft="45dp"
+        android:drawableLeft="@drawable/star"
+        android:layout_below="@+id/tvBody"
+        android:layout_toRightOf="@+id/tvRetweets"
+        android:layout_toEndOf="@+id/tvRetweets"
+        android:layout_alignTop="@+id/tvRetweets"
+        android:layout_alignBottom="@+id/tvRetweets"
+        android:paddingLeft="2dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvLapseTime"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBaseline="@id/tvuserName"
+        android:textSize="10dp"
+        android:textColor="@color/plain_grey"/>
+
+</RelativeLayout>
