@@ -1,5 +1,7 @@
 package com.codepath.apps.tweetTweet.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -9,7 +11,7 @@ import org.json.JSONObject;
 /**
  * Created by alinc on 10/4/15.
  */
-public class Media {
+public class Media implements Parcelable {
     public int getLarge_height() {
         return large_height;
     }
@@ -38,11 +40,9 @@ public class Media {
 
                 media.large_height = o.getJSONObject("sizes").getJSONObject("large").getInt("h");
                 media.large_width = o.getJSONObject("sizes").getJSONObject("large").getInt("w");
-                //Log.d("My json array: ", media.media_url.toString() + " h: " + media.large_height + " w: " + media.large_width);
             }
             else {
                 media.media_id = 0;
-                //Log.d("My json array: ", "Empty array");
             }
 
         } catch (JSONException e) {
@@ -59,4 +59,37 @@ public class Media {
     public long getMedia_id() {
         return media_id;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.media_url);
+        dest.writeLong(this.media_id);
+        dest.writeInt(this.large_height);
+        dest.writeInt(this.large_width);
+    }
+
+    public Media() {
+    }
+
+    protected Media(Parcel in) {
+        this.media_url = in.readString();
+        this.media_id = in.readLong();
+        this.large_height = in.readInt();
+        this.large_width = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Media> CREATOR = new Parcelable.Creator<Media>() {
+        public Media createFromParcel(Parcel source) {
+            return new Media(source);
+        }
+
+        public Media[] newArray(int size) {
+            return new Media[size];
+        }
+    };
 }

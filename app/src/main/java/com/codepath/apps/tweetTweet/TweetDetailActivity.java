@@ -1,5 +1,6 @@
 package com.codepath.apps.tweetTweet;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -12,6 +13,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.codepath.apps.tweetTweet.R;
+import com.codepath.apps.tweetTweet.models.Tweet;
+import com.codepath.apps.tweetTweet.models.User;
 import com.codepath.apps.tweetTweet.utils.DynamicHeightImageView;
 import com.squareup.picasso.Picasso;
 
@@ -53,19 +56,21 @@ public class TweetDetailActivity extends AppCompatActivity {
         tvRetweets.setTypeface(robotoLightTypeface);
         tvFavorites.setTypeface(robotoLightTypeface);
 
-        tvUserName.setText(getIntent().getStringExtra("userName"));
-        tvProfileName.setText("@" + getIntent().getStringExtra("screenName"));
-        tvBody.setText(getIntent().getStringExtra("body"));
-        tvCreatedDate.setText(getIntent().getStringExtra("created_at"));
-        tvRetweets.setText(getIntent().getStringExtra("retweets") + " " + getResources().getString(R.string.Retweets));
-        tvFavorites.setText(getIntent().getIntExtra("favourites", Integer.valueOf(0)) + " " + getResources().getString(R.string.favorites));
+        Intent i = getIntent();
+        Tweet tweet = (Tweet) i.getParcelableExtra("Tweet");
+        tvUserName.setText(tweet.getUser().getName());
+        tvProfileName.setText("@" + tweet.getUser().getScreenName());
+        tvBody.setText(tweet.getBody());
+        tvCreatedDate.setText(tweet.getCreatedTimeStamp());
+        tvRetweets.setText(tweet.getRetweet_count() + " " + getResources().getString(R.string.Retweets));
+        tvFavorites.setText(tweet.getFavourites_count() + " " + getResources().getString(R.string.favorites));
 
-        Picasso.with(this).load(getIntent().getStringExtra("profileImage")).into(ivProfile);
+        Picasso.with(this).load(tweet.getUser().getProfileImageUrl()).into(ivProfile);
 
-        if(getIntent().getLongExtra("media_id", 0) > 0) {
-            float heightRatio=(float)getIntent().getIntExtra("media_height", 0) / (float)getIntent().getIntExtra("media_width", 0);
+        if(tweet.getMedia().getMedia_id() > 0) {
+            float heightRatio=(float)tweet.getMedia().getLarge_height() / (float)tweet.getMedia().getLarge_width();
             ivMedia.setHeightRatio(heightRatio);
-            Picasso.with(this).load(getIntent().getStringExtra("media_url")).fit().into(ivMedia);
+            Picasso.with(this).load(tweet.getMedia().getMedia_url()).fit().into(ivMedia);
         }
     }
 

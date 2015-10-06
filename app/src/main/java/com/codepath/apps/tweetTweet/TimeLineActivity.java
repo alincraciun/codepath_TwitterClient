@@ -192,18 +192,7 @@ public class TimeLineActivity extends AppCompatActivity {
                         Intent i = new Intent(TimeLineActivity.this, TweetDetailActivity.class);
                         i.putExtra("pos", pos);
                         i.putExtra("id", id);
-                        i.putExtra("tid", tweets.get(pos).getId());
-                        i.putExtra("body", tweets.get(pos).getBody());
-                        i.putExtra("created_at", tweets.get(pos).getCreatedTimeStamp());
-                        i.putExtra("favourites", tweets.get(pos).getFavourites_count());
-                        i.putExtra("retweets", String.valueOf(tweets.get(pos).getRetweet_count()));
-                        i.putExtra("userName", tweets.get(pos).getUser().getName());
-                        i.putExtra("profileImage", tweets.get(pos).getUser().getProfileImageUrl());
-                        i.putExtra("screenName", tweets.get(pos).getUser().getScreenName());
-                        i.putExtra("media_id", tweets.get(pos).getMedia().getMedia_id());
-                        i.putExtra("media_url", tweets.get(pos).getMedia().getMedia_url());
-                        i.putExtra("media_height", tweets.get(pos).getMedia().getLarge_height());
-                        i.putExtra("media_width", tweets.get(pos).getMedia().getLarge_width());
+                        i.putExtra("Tweet", tweets.get(pos));
                         startActivity(i);
                     }
                 }

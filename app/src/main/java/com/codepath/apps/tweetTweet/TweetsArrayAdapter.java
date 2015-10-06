@@ -121,7 +121,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
         if(tweet.getMedia().getMedia_id() > 0) {
             Picasso.with(getContext()).load(tweet.getMedia().getMedia_url()).resize(340, 201).centerCrop().into(vh.ivMediaImage);
-        }
+        } else { vh.ivMediaImage.setEnabled(false); }
 
         vh.tvReply.setOnClickListener(new View.OnClickListener() {
             @Override

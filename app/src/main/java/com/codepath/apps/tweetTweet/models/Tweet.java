@@ -1,6 +1,7 @@
 package com.codepath.apps.tweetTweet.models;
 
-import android.util.Log;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.activeandroid.query.Select;
 import com.codepath.apps.tweetTweet.utils.Utilities;
@@ -23,7 +24,7 @@ import com.codepath.apps.tweetTweet.models.OfflineTweets.Tweets;
  *
  */
 
-public class Tweet {
+public class Tweet implements Parcelable {
 
     //list out the attributes
     private long id;
@@ -228,4 +229,47 @@ public class Tweet {
 
         return tweet;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.body);
+        dest.writeParcelable(this.user, flags);
+        dest.writeLong(this.uid);
+        dest.writeParcelable(this.media, flags);
+        dest.writeString(this.createdAt);
+        dest.writeInt(this.retweet_count);
+        dest.writeInt(this.favourites_count);
+        dest.writeString(this.createdTimeStamp);
+    }
+
+    public Tweet() {
+    }
+
+    protected Tweet(Parcel in) {
+        this.id = in.readLong();
+        this.body = in.readString();
+        this.user = in.readParcelable(User.class.getClassLoader());
+        this.uid = in.readLong();
+        this.media = in.readParcelable(Media.class.getClassLoader());
+        this.createdAt = in.readString();
+        this.retweet_count = in.readInt();
+        this.favourites_count = in.readInt();
+        this.createdTimeStamp = in.readString();
+    }
+
+    public static final Parcelable.Creator<Tweet> CREATOR = new Parcelable.Creator<Tweet>() {
+        public Tweet createFromParcel(Parcel source) {
+            return new Tweet(source);
+        }
+
+        public Tweet[] newArray(int size) {
+            return new Tweet[size];
+        }
+    };
 }
