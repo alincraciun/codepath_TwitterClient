@@ -43,6 +43,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
     static class ViewHolder {
         DynamicHeightImageView ivProfileImage;
+        DynamicHeightImageView ivMediaImage;
         TextView tvUserName;
         LinkifiedTextView tvBody;
         TextView tvProfileName;
@@ -63,6 +64,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             vh = new ViewHolder();
 
             vh.ivProfileImage = (DynamicHeightImageView) convertView.findViewById(R.id.ivProfileImage);
+            vh.ivMediaImage = (DynamicHeightImageView) convertView.findViewById(R.id.ivMediaImage);
             vh.tvUserName = (TextView) convertView.findViewById(R.id.tvuserName);
             vh.tvBody = (LinkifiedTextView) convertView.findViewById(R.id.tvBody);
             vh.tvReply = (TextView) convertView.findViewById(R.id.tvReply);
@@ -110,28 +112,16 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
                 TypedValue.COMPLEX_UNIT_DIP,
                 leftMargin,
                 metrics
-            ), lpt.topMargin,lpt.rightMargin,lpt.bottomMargin);
+        ), lpt.topMargin, lpt.rightMargin, lpt.bottomMargin);
         vh.tvFavorites.setLayoutParams(lpt);
 
         //loadBitmap(tweet.getUser().getProfileImageUrl());
         String biggerImage = tweet.getUser().getProfileImageUrl().replace("_normal.", "_bigger.");
         Picasso.with(getContext()).load(biggerImage).into(vh.ivProfileImage);
-/*
-        vh.tvBody.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getContext(), TweetDetailActivity.class);
-                i.putExtra("tid", tweet.getId());
-                i.putExtra("body", tweet.getBody());
-                i.putExtra("created_at", tweet.getCreatedTimeStamp());
-                i.putExtra("favourites", String.valueOf(tweet.getFavourites_count()));
-                i.putExtra("retweets", String.valueOf(tweet.getRetweet_count()));
-                i.putExtra("userName", tweet.getUser().getName());
-                i.putExtra("profileImage", tweet.getUser().getProfileImageUrl());
-                i.putExtra("screenName", tweet.getUser().getScreenName());
-                getContext().startActivity(i);
-            }
-        });*/
+
+        if(tweet.getMedia().getMedia_id() > 0) {
+            Picasso.with(getContext()).load(tweet.getMedia().getMedia_url()).resize(340, 201).centerCrop().into(vh.ivMediaImage);
+        }
 
         vh.tvReply.setOnClickListener(new View.OnClickListener() {
             @Override

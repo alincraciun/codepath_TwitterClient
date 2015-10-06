@@ -35,7 +35,6 @@ public class Tweet {
     private int retweet_count = 0;
     private int favourites_count = 0;
     private String createdTimeStamp;
-    private String media_url;
 
     public String getBody() {
         return body;
@@ -95,7 +94,6 @@ public class Tweet {
 
     }
 
-
     public int getRetweet_count() {
         return retweet_count;
     }
@@ -106,10 +104,6 @@ public class Tweet {
 
     public String getCreatedTimeStamp() {
         return createdTimeStamp;
-    }
-
-    public String getMedia_url() {
-        return media_url;
     }
 
     //Deserialize the JSON
@@ -124,8 +118,7 @@ public class Tweet {
             tweet.retweet_count = jsonObject.optInt("retweet_count");
             tweet.favourites_count = jsonObject.optInt("favorite_count");
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
-            //tweet.media = Media.fromJSON(jsonObject.getJSONObject("entities"));
-            //tweet.media_url = jsonObject.getJSONObject("entities").optJSONArray("media").optJSONObject(0).optString("media_url");
+            tweet.media = Media.fromJSON(jsonObject.optJSONObject("entities"));
             tweet.id = jsonObject.getLong("id");
 
             //tweet.mUrl = jsonObject.getString("");

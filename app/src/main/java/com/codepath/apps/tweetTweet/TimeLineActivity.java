@@ -200,7 +200,10 @@ public class TimeLineActivity extends AppCompatActivity {
                         i.putExtra("userName", tweets.get(pos).getUser().getName());
                         i.putExtra("profileImage", tweets.get(pos).getUser().getProfileImageUrl());
                         i.putExtra("screenName", tweets.get(pos).getUser().getScreenName());
-                        //i.putExtra("media_url", tweets.get(0).getMedia_url());
+                        i.putExtra("media_id", tweets.get(pos).getMedia().getMedia_id());
+                        i.putExtra("media_url", tweets.get(pos).getMedia().getMedia_url());
+                        i.putExtra("media_height", tweets.get(pos).getMedia().getLarge_height());
+                        i.putExtra("media_width", tweets.get(pos).getMedia().getLarge_width());
                         startActivity(i);
                     }
                 }

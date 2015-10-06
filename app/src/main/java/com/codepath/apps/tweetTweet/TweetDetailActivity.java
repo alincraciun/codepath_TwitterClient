@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class TweetDetailActivity extends AppCompatActivity {
         }
 
         DynamicHeightImageView ivProfile = (DynamicHeightImageView) findViewById(R.id.ivdProfileImage);
-        //DynamicHeightImageView ivMedia = (DynamicHeightImageView) findViewById(R.id.ivMedia);
+        DynamicHeightImageView ivMedia = (DynamicHeightImageView) findViewById(R.id.ivMedia);
         TextView tvUserName = (TextView) findViewById(R.id.tvdUserName);
         TextView tvProfileName = (TextView) findViewById(R.id.tvdProfileName);
         TextView tvBody = (TextView) findViewById(R.id.tvdBody);
@@ -61,7 +62,11 @@ public class TweetDetailActivity extends AppCompatActivity {
 
         Picasso.with(this).load(getIntent().getStringExtra("profileImage")).into(ivProfile);
 
-        //Picasso.with(this).load(getIntent().getStringExtra("media_url")).into(ivMedia);
+        if(getIntent().getLongExtra("media_id", 0) > 0) {
+            float heightRatio=(float)getIntent().getIntExtra("media_height", 0) / (float)getIntent().getIntExtra("media_width", 0);
+            ivMedia.setHeightRatio(heightRatio);
+            Picasso.with(this).load(getIntent().getStringExtra("media_url")).fit().into(ivMedia);
+        }
     }
 
     @Override
