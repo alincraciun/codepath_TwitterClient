@@ -5,11 +5,16 @@ import org.scribe.builder.api.FlickrApi;
 import org.scribe.builder.api.TwitterApi;
 
 import android.content.Context;
+import android.text.Html;
 import android.util.Log;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 
 /**
@@ -46,7 +51,10 @@ public class TwitterClient extends OAuthBaseClient {
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
 	}
 
-	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
+	public void setMaxID(long maxID) {
+		this.maxID = maxID;
+	}
+/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
 	 * 2. Define the parameters to pass to the request (query or body)
 	 *    i.e RequestParams params = new RequestParams("foo", "bar");
@@ -64,8 +72,7 @@ public class TwitterClient extends OAuthBaseClient {
 		if (this.maxID > 0) { params.put("max_id", (maxID - 1)); }
         //Execute request
         getClient().get(apiURL, params, handler);
-
-    }
+	}
 
     // COMPOSE TWEET
 	public void postMessage(AsyncHttpResponseHandler handler, String message, long messageId) {
@@ -78,5 +85,70 @@ public class TwitterClient extends OAuthBaseClient {
 		getClient().post(apiURL, params, handler);
 
 	}
+
+	public void getMentionsTimeLine(AsyncHttpResponseHandler handler) {
+		String apiURL = getApiUrl("statuses/mentions_timeline.json");
+		RequestParams params = new RequestParams();
+		params.put("count", 25);
+
+		if (this.maxID > 0) { params.put("max_id", (maxID - 1)); }
+		//Execute request
+		getClient().get(apiURL, params, handler);
+	}
+
+	public void getUserTimeLine(String screenName, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/user_timeline.json");
+		RequestParams params = new RequestParams();
+		params.put("count", 25);
+		params.put("screen_name", screenName);
+		getClient().get(apiUrl, params, handler);
+	}
+
+	public void getUserInfo(AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("account/verify_credentials.json");
+		getClient().get(apiUrl, null, handler);
+	}
+
+	public void postCreateFavorite(AsyncHttpResponseHandler handler, long msgID) {
+		String apiUrl = getApiUrl("favorites/create.json");
+		RequestParams params = new RequestParams();
+		params.put("id", msgID);
+		getClient().post(apiUrl, params, handler);
+	}
+
+	public void postDestroyFavorite(AsyncHttpResponseHandler handler, long msgID) {
+		String apiUrl = getApiUrl("favorites/destroy.json");
+		RequestParams params = new RequestParams();
+		params.put("id", msgID);
+		getClient().post(apiUrl, params, handler);
+	}
+
+	public void postReTweet(AsyncHttpResponseHandler handler, long msgID) {
+		String apiUrl = getApiUrl("statuses/retweet/" + msgID + ".json");
+		getClient().post(apiUrl, handler);
+	}
+
+	public void postDestroyReTweet(AsyncHttpResponseHandler handler, long msgID) {
+		String apiUrl = getApiUrl("statuses/destroy/" + msgID + ".json");
+		Log.d("DESTROY:: ", apiUrl);
+		getClient().post(apiUrl, handler);
+	}
+
+	public void getSearchTweets(AsyncHttpResponseHandler handler, String q) {
+		String apiURL = getApiUrl("search/tweets.json");
+		RequestParams params = new RequestParams();
+		try {
+			params.put("q", URLEncoder.encode(q, "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		params.put("count", 25);
+		params.put("since_id", 1);
+
+		if (this.maxID > 0) { params.put("max_id", (maxID - 1)); }
+		//Execute request
+		getClient().get(apiURL, params, handler);
+	}
+
 
 }

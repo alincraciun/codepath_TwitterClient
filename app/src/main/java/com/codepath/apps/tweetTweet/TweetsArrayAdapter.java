@@ -14,6 +14,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,8 +22,12 @@ import android.widget.TextView;
 import com.codepath.apps.tweetTweet.models.Tweet;
 import com.codepath.apps.tweetTweet.utils.DynamicHeightImageView;
 import com.codepath.apps.tweetTweet.utils.LinkifiedTextView;
+import com.codepath.apps.tweetTweet.utils.Utilities;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
+import org.apache.http.Header;
 
 import java.util.List;
 import java.util.Random;
@@ -34,6 +39,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
     private static final SparseArray<Double> sPositionHeightRatios = new SparseArray<Double>();
     private final Random mRandom;
     private Target imageHolder;
+    private TwitterClient client;
     ViewHolder vh;
 
     public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
@@ -56,9 +62,9 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        // 1. Get the tweet
         final Tweet tweet = getItem(position);
-        // 2. Find or inflate the template
+        client = TwitterApplication.getRestClient();
+
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
             vh = new ViewHolder();
@@ -77,6 +83,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         }
         else {
             vh = (ViewHolder) convertView.getTag();
+            vh.ivMediaImage.setImageDrawable(null);
         }
         Typeface defaultTypeface =  Typeface.createFromAsset(getContext().getAssets(), "roboto.ttf");
         Typeface robotoBoldTypeface =  Typeface.createFromAsset(getContext().getAssets(), "roboto_bold.ttf");
@@ -97,6 +104,16 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         vh.tvLapseTime.setText(tweet.getCreatedAt());
         vh.ivProfileImage.setImageResource(android.R.color.transparent);
         vh.tvRetweets.setText(retweets);
+        if(tweet.getRetweeted().contains("true")) {
+            vh.tvRetweets.setCompoundDrawablesWithIntrinsicBounds(R.drawable.retweet_blue_small, 0, 0, 0);
+        } else {
+            vh.tvRetweets.setCompoundDrawablesWithIntrinsicBounds(R.drawable.retweet, 0, 0, 0);
+        }
+        if(tweet.getFavorited().contains("true")) {
+            vh.tvFavorites.setCompoundDrawablesWithIntrinsicBounds(R.drawable.star_yellow_small, 0, 0, 0);
+        } else {
+            vh.tvFavorites.setCompoundDrawablesWithIntrinsicBounds(R.drawable.star, 0, 0, 0);
+        }
         vh.tvFavorites.setText(String.valueOf(tweet.getFavourites_count()));
 
         final ViewGroup.MarginLayoutParams lpt =(ViewGroup.MarginLayoutParams)vh.tvFavorites.getLayoutParams();
@@ -119,9 +136,22 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         String biggerImage = tweet.getUser().getProfileImageUrl().replace("_normal.", "_bigger.");
         Picasso.with(getContext()).load(biggerImage).into(vh.ivProfileImage);
 
-        if(tweet.getMedia().getMedia_id() > 0) {
-            Picasso.with(getContext()).load(tweet.getMedia().getMedia_url()).resize(340, 201).centerCrop().into(vh.ivMediaImage);
+        if (tweet.getMedia().getMedia_id() > 0) {
+            vh.ivMediaImage.setEnabled(true);
+            Picasso.with(getContext()).load(tweet.getMedia().getMedia_url()).resize(280, 141).centerCrop().into(vh.ivMediaImage);
         } else { vh.ivMediaImage.setEnabled(false); }
+
+        vh.ivProfileImage.setTag(tweet.getUser().getName());
+        vh.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), ProfileActivity.class);
+                i.putExtra("screen_name", tweet.getUser().getScreenName());
+                i.putExtra("myAccount", false);
+                i.putExtra("user", tweet.getUser());
+                getContext().startActivity(i);
+            }
+        });
 
         vh.tvReply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +161,43 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
                 i.putExtra("body", "@" + tweet.getUser().getScreenName() + " ");
                 i.putExtra("title", tweet.getUser().getName());
                 ((Activity)getContext()).startActivityForResult(i, 100);
+            }
+        });
+
+        vh.tvFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(tweet.getFavorited().contentEquals("false")) {
+                    client.postCreateFavorite(new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            tweet.setFavorited("true");
+                            tweet.setFavourites_count(tweet.getFavourites_count() + 1);
+                            vh.tvFavorites.setCompoundDrawablesWithIntrinsicBounds(R.drawable.star_yellow_small, 0, 0, 0);
+                            vh.tvFavorites.setText(String.valueOf(tweet.getFavourites_count()));
+                            notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        }
+                    }, tweet.getId());
+                } else if(tweet.getFavorited().contentEquals("true")) {
+                    client.postDestroyFavorite(new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            tweet.setFavorited("false");
+                            tweet.setFavourites_count(tweet.getFavourites_count() - 1);
+                            vh.tvFavorites.setCompoundDrawablesWithIntrinsicBounds(R.drawable.star, 0, 0, 0);
+                            vh.tvFavorites.setText(String.valueOf(tweet.getFavourites_count()));
+                            notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        }
+                    }, tweet.getId());
+                }
             }
         });
 

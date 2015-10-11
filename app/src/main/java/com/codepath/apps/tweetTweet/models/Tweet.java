@@ -36,6 +36,9 @@ public class Tweet implements Parcelable {
     private int retweet_count = 0;
     private int favourites_count = 0;
     private String createdTimeStamp;
+    private String retweeted;
+    private String favorited;
+    private long retweetid;
 
     public String getBody() {
         return body;
@@ -107,6 +110,23 @@ public class Tweet implements Parcelable {
         return createdTimeStamp;
     }
 
+    public String getRetweeted() {
+        return retweeted;
+    }
+
+    public String getFavorited() {
+        return favorited;
+    }
+
+    public void setRetweetid(long retweetid) {
+        this.retweetid = retweetid;
+    }
+
+    public long getRetweetid() {
+
+        return retweetid;
+    }
+
     //Deserialize the JSON
     public static Tweet fromJSON(JSONObject jsonObject) {
         Tweet tweet = new Tweet();
@@ -121,6 +141,9 @@ public class Tweet implements Parcelable {
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
             tweet.media = Media.fromJSON(jsonObject.optJSONObject("entities"));
             tweet.id = jsonObject.getLong("id");
+            tweet.retweeted = String.valueOf(jsonObject.getBoolean("retweeted"));
+            tweet.favorited = String.valueOf(jsonObject.getBoolean("favorited"));
+
 
             //tweet.mUrl = jsonObject.getString("");
             //  Log.d("FAV::  ", String.valueOf(jsonObject.optInt("favorite_count")));
@@ -154,6 +177,14 @@ public class Tweet implements Parcelable {
         }
 
         return tweets;
+    }
+
+    public void setRetweeted(String retweeted) {
+        this.retweeted = retweeted;
+    }
+
+    public void setFavorited(String favorited) {
+        this.favorited = favorited;
     }
 
     private static void truncateTables() {
@@ -246,6 +277,8 @@ public class Tweet implements Parcelable {
         dest.writeInt(this.retweet_count);
         dest.writeInt(this.favourites_count);
         dest.writeString(this.createdTimeStamp);
+        dest.writeString(this.retweeted);
+        dest.writeString(this.favorited);
     }
 
     public Tweet() {
@@ -261,6 +294,8 @@ public class Tweet implements Parcelable {
         this.retweet_count = in.readInt();
         this.favourites_count = in.readInt();
         this.createdTimeStamp = in.readString();
+        this.retweeted = in.readString();
+        this.favorited = in.readString();
     }
 
     public static final Parcelable.Creator<Tweet> CREATOR = new Parcelable.Creator<Tweet>() {
@@ -272,4 +307,8 @@ public class Tweet implements Parcelable {
             return new Tweet[size];
         }
     };
+
+    public static long ridFromJSON(JSONObject jsonObject) throws JSONException {
+        return jsonObject.getLong("id");
+    }
 }

@@ -6,7 +6,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.format.DateUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -51,5 +55,42 @@ public class Utilities {
         shortTime = shortTime.replaceAll("mutes", "m");
         shortTime = shortTime.replaceAll("seconds", "s");
         return shortTime.replaceAll("\\s", "");
+    }
+
+    public static Boolean checkNetwork(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        //return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+        return true; //activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
+    public static String parseAPIError(JSONObject error) {
+        String errorMessage = null;
+        try {
+            errorMessage = error.getJSONArray("errors").getJSONObject(0).getString("message");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if(errorMessage !=null && errorMessage.contains("Rate limit exceeded")) {
+            return "Twitter API error: Rate limit exceeded! Try again later...";
+        }
+        else
+            return errorMessage;
+    }
+
+    public static String shortDigits(int number) {
+        String formattedNumber = String.valueOf(number);
+        if(formattedNumber.length() >= 7) {
+            formattedNumber = String.format("%.2fM", number / 1000000.0);
+        } else if (formattedNumber.length() == 6) {
+            formattedNumber = String.format("%.2fK", number / 100000.0);
+        } else if (formattedNumber.length() == 5) {
+            formattedNumber = String.format("%.2fK", number/ 10000.0);
+        } else if (formattedNumber.length() == 4) {
+            formattedNumber = String.format("%.2fK", number/ 1000.0);
+        }
+
+        return formattedNumber;
     }
 }

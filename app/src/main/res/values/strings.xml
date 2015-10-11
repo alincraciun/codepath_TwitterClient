@@ -22,5 +22,16 @@
     <string name="title_activity_tweet_detail">TweetDetailActivity</string>
     <string name="Retweets">RETWEETS</string>
     <string name="favorites">FAVORITES</string>
+    <string name="HomeTab">Home</string>
+    <string name="MentionsTab">Mentions</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="retweet">Retweets</string>
+    <string name="quotetweet">Quote tweet</string>
+    <string name="follower">FOLLOWER</string>
+    <string name="followers">FOLLOWERS</string>
+    <string name="following">FOLLOWING</string>
+    <string name="tweets">TWEETS</string>
+    <string name="undo_retweet">Undo retweet</string>
+    <string name="postRetweet">Retweet</string>
 
 </resources>

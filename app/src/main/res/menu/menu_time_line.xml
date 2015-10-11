@@ -2,7 +2,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.codepath.apps.tweetTweet.TimeLineActivity">
+    <item
+        android:id="@+id/miProfile"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile_name"
+        android:onClick="onProfileView"
+        android:orderInCategory="120"/>
+    <item
+        android:id="@+id/miActionProgress"
+        android:title="Loading..."
+        android:visible="false"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        app:actionLayout="@layout/action_view_progress"/>
     <item android:id="@+id/action_compose" android:title="@string/action_compose"
-        android:orderInCategory="100" app:showAsAction="always"
-        android:icon="@drawable/compose"/>
+        android:orderInCategory="110" app:showAsAction="always"
+        android:icon="@drawable/pen"/>
+    <item android:id="@+id/action_search"
+        android:orderInCategory="130"
+        android:title="Search"
+        android:icon="@drawable/search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
+
 </menu>

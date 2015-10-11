@@ -2,6 +2,7 @@ package com.codepath.apps.tweetTweet.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +31,27 @@ public class User implements Parcelable {
     public long uid;
     public String screenName;
     public String profileImageUrl;
+    private String tagline;
+    private int tweetsCount;
+    private int followersCount;
+    private int followingsCount;
     public static User user;
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public int getFollowingsCount() {
+        return followingsCount;
+    }
+
+    public int getTweetsCount() {
+        return tweetsCount;
+    }
 
     // deserialize the user json to User
     public static User fromJSON(JSONObject json) {
@@ -40,6 +61,11 @@ public class User implements Parcelable {
             user.uid = json.getLong("id");
             user.screenName = json.getString("screen_name");
             user.profileImageUrl = json.getString("profile_image_url");
+            user.tagline = json.getString("description");
+            user.followersCount = json.getInt("followers_count");
+            user.followingsCount = json.getInt("friends_count");
+            user.tweetsCount = json.getInt("statuses_count");
+            
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -84,7 +110,11 @@ public class User implements Parcelable {
         dest.writeString(this.name);
         dest.writeLong(this.uid);
         dest.writeString(this.screenName);
+        dest.writeString(this.tagline);
         dest.writeString(this.profileImageUrl);
+        dest.writeInt(this.followersCount);
+        dest.writeInt(this.followingsCount);
+        dest.writeInt(this.tweetsCount);
     }
 
     public User() {
@@ -94,7 +124,11 @@ public class User implements Parcelable {
         this.name = in.readString();
         this.uid = in.readLong();
         this.screenName = in.readString();
+        this.tagline = in.readString();
         this.profileImageUrl = in.readString();
+        this.followingsCount = in.readInt();
+        this.followersCount = in.readInt();
+        this.tweetsCount = in.readInt();
     }
 
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {

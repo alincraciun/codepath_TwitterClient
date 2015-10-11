@@ -1,0 +1,109 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.codepath.apps.tweetTweet.ProfileActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false"
+        android:background="@color/white"
+        android:id="@+id/rlUserHeader">
+
+        <com.codepath.apps.tweetTweet.utils.DynamicHeightImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:id="@+id/ivpProfileImage"
+            android:adjustViewBounds="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:src="@android:drawable/screen_background_light_transparent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:id="@+id/tvpName"
+            android:layout_toRightOf="@id/ivpProfileImage"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvTagline"
+            android:layout_alignLeft="@+id/tvpName"
+            android:layout_below="@+id/tvpName"
+            android:text="Tagline"
+            android:textSize="12sp"
+            android:layout_marginBottom="5dp"
+            />
+    </RelativeLayout>
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/llCounts"
+        android:layout_below="@+id/rlUserHeader"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TableRow>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvTweets"
+                android:background="@color/white"
+                android:textSize="12sp"
+                android:text="5 TWEETS"/>
+            <TextView android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvFollowing"
+                android:layout_marginLeft="20dp"
+                android:background="@color/white"
+                android:textSize="12sp"
+                android:text="5 FOLLOWING"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="20dp"
+                android:background="@color/white"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:id="@+id/tvFollowers"
+                android:text="5 FOLLOWERS"/>
+        </TableRow>
+        <TableRow android:layout_height="1px"
+            android:layout_marginTop="5dp"
+            android:background="#BDBDBD">
+            <TextView android:layout_span="2" android:layout_height="1px"
+                android:layout_width="fill_parent" android:text="">
+            </TextView>
+        </TableRow>
+    </TableLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/llCounts"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/flContainer"></FrameLayout>
+</RelativeLayout>
