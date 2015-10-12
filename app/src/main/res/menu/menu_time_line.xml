@@ -23,7 +23,6 @@
         android:orderInCategory="130"
         android:title="Search"
         android:icon="@drawable/search"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="android.support.v7.widget.SearchView"/>
+        app:showAsAction="ifRoom|collapseActionView"/>
 
 </menu>

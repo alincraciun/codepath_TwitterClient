@@ -82,6 +82,7 @@ public class ProfileActivity extends AppCompatActivity {
             tvFollowers.setText(Html.fromHtml("<b><font color=\"#000000\">" + Utilities.shortDigits(user.getFollowersCount()) + "</font></b><br/>" + getString(R.string.followers)));
         tvFollowing.setText(Html.fromHtml("<b><font color=\"#000000\">" + Utilities.shortDigits(user.getFollowingsCount()) + "</font></b><br/>" + getString(R.string.following)));
         tvTweets.setText(Html.fromHtml("<b><font color=\"#000000\">" + Utilities.shortDigits(user.getTweetsCount()) + "</font></b><br/>" + getString(R.string.tweets)));
+        Log.d("ME:: ", user.getProfileImageUrl());
         Picasso.with(this).load(user.getProfileImageUrl()).into(ivProfileImage);
     }
 

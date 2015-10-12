@@ -1,44 +1,30 @@
 package com.codepath.apps.tweetTweet.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.tweetTweet.R;
 import com.codepath.apps.tweetTweet.TweetDetailActivity;
 import com.codepath.apps.tweetTweet.TweetsArrayAdapter;
 import com.codepath.apps.tweetTweet.TwitterApplication;
-import com.codepath.apps.tweetTweet.TwitterClient;
 import com.codepath.apps.tweetTweet.listeners.TweetScrollListener;
 import com.codepath.apps.tweetTweet.models.Tweet;
 import com.codepath.apps.tweetTweet.utils.Utilities;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +40,6 @@ public abstract class TweetsListFragment extends Fragment {
     private ListView lvTweets;
     private MenuItem miActionProgressItem;
     private ProgressBar v;
-    private TwitterClient client;
 
     private SwipeRefreshLayout swipeContainer;
 
@@ -69,19 +54,18 @@ public abstract class TweetsListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tweets_list, container, false);
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.srl);
         lvTweets = (ListView) v.findViewById(R.id.lvTweets);
-        lvTweets.setAdapter(aTweets);
-
         lvTweets.setOnScrollListener(new TweetScrollListener() {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
                 if (!Utilities.checkNetwork(TweetsListFragment.this.getContext())) {
+                    Toast.makeText(getContext(), "You are offline!", Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 loadMoreTweets();
                 return true;
             }
         });
-
+        lvTweets.setAdapter(aTweets);
         setupDetailListener();
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -111,7 +95,6 @@ public abstract class TweetsListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        client = TwitterApplication.getRestClient();
         tweets = new ArrayList<>();
         aTweets = new TweetsArrayAdapter(getContext(), tweets);
         hideProgressBar();
@@ -119,6 +102,12 @@ public abstract class TweetsListFragment extends Fragment {
 
     public void addAll(List<Tweet> tweets) {
         aTweets.addAll(tweets);
+        Log.d("SIZE:: ", String.valueOf(aTweets.getCount()));
+    }
+
+    public void addTweet(Tweet newTweet) {
+        aTweets.insert(newTweet, 0);
+        aTweets.notifyDataSetChanged();
     }
 
     public void clearAll() {
@@ -131,6 +120,7 @@ public abstract class TweetsListFragment extends Fragment {
 
 
     public void loadMoreTweets() {
+        Log.d("ID:: ", "LOAD more...");
         populateTimeLine();
         aTweets.notifyDataSetChanged();
     }
@@ -140,56 +130,6 @@ public abstract class TweetsListFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         miActionProgressItem = menu.findItem(R.id.miActionProgress);
         v =  (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        searchEditText.setTextColor(getResources().getColor(R.color.twitter_azure));
-        //searchView.setBackgroundColor(getResources().getColor(R.color.twitter_azure));
-
-
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                populateTimeLine();
-                return true;
-            }
-        });
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                if (!Utilities.checkNetwork(getContext())) {
-                    Log.d(TAG, "WiFi not available");
-                    Toast.makeText(getContext(), "Network Connection not available, search not available.", Toast.LENGTH_SHORT).show();
-                } else {
-                    client.getSearchTweets(new JsonHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
-                            clearAll();
-                            try {
-                                addAll(Tweet.fromJSONArray(json.getJSONArray("statuses"), false));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            hideProgressBar();
-                            client.maxID = getaTweets().getItem(getaTweets().getCount() - 1).getId();
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                            Toast.makeText(getContext(), Utilities.parseAPIError(errorResponse), Toast.LENGTH_SHORT).show();
-                            Log.d("onFailure DEBUG:: ", errorResponse.toString());
-                        }
-                    }, query);
-                }
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
     }
 
     public void showProgressBar() {
@@ -221,11 +161,6 @@ public abstract class TweetsListFragment extends Fragment {
                 }
         );
 
-    }
-
-    public void addTweet(Tweet newTweet) {
-        aTweets.add(newTweet);
-        aTweets.notifyDataSetChanged();
     }
 
 }

@@ -33,5 +33,6 @@
     <string name="tweets">TWEETS</string>
     <string name="undo_retweet">Undo retweet</string>
     <string name="postRetweet">Retweet</string>
+    <string name="title_activity_search">SearchActivity</string>
 
 </resources>

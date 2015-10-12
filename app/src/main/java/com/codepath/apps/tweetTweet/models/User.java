@@ -2,7 +2,6 @@ package com.codepath.apps.tweetTweet.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,9 +93,8 @@ public class User implements Parcelable {
         User user = new User();
         user.setUid(Long.valueOf("3723831794"));
         user.setName("uberAlin");
-        user.setProfileImageUrl("https://abs.twimg.com/sticky/default_profile_images/default_profile_4_normal.png");
+        user.setProfileImageUrl("http://pbs.twimg.com/profile_images/652135219315630082/QN2uKzAk_normal.jpg");
         user.setScreenName("uberTweet");
-
         return user;
     }
 

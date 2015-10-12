@@ -23,7 +23,6 @@ public class MentionsTimeLineFragment extends TweetsListFragment {
     private String TAG = this.getClass().getName();
     private TwitterClient client;
     private boolean refresh = false;
-    private boolean dbRefresh = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +43,6 @@ public class MentionsTimeLineFragment extends TweetsListFragment {
         if (!Utilities.checkNetwork(getContext())) {
             Log.d(TAG, "WiFi not available");
             Toast.makeText(getContext(), "Network Connection not available, only offline messages displayed.", Toast.LENGTH_SHORT).show();
-            //addAll(Tweet.metionsFromDBArray());
         } else {
             client.getMentionsTimeLine(new JsonHttpResponseHandler() {
                 @Override
@@ -52,7 +50,7 @@ public class MentionsTimeLineFragment extends TweetsListFragment {
                     if (refreshData) {
                         clearAll();
                     }
-                    addAll(Tweet.fromJSONArray(json, dbRefresh));
+                    addAll(Tweet.fromJSONArray(json, false));
                     client.maxID = getaTweets().getItem(getaTweets().getCount() - 1).getId();
                     hideProgressBar();
                     refresh = false;

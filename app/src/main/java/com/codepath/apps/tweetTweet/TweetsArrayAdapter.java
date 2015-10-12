@@ -1,6 +1,5 @@
 package com.codepath.apps.tweetTweet;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -14,15 +13,12 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codepath.apps.tweetTweet.models.Tweet;
 import com.codepath.apps.tweetTweet.utils.DynamicHeightImageView;
 import com.codepath.apps.tweetTweet.utils.LinkifiedTextView;
-import com.codepath.apps.tweetTweet.utils.Utilities;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -51,7 +47,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         DynamicHeightImageView ivProfileImage;
         DynamicHeightImageView ivMediaImage;
         TextView tvUserName;
-        LinkifiedTextView tvBody;
+        TextView tvBody;
         TextView tvProfileName;
         TextView tvLapseTime;
         TextView tvRetweets;
@@ -72,7 +68,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             vh.ivProfileImage = (DynamicHeightImageView) convertView.findViewById(R.id.ivProfileImage);
             vh.ivMediaImage = (DynamicHeightImageView) convertView.findViewById(R.id.ivMediaImage);
             vh.tvUserName = (TextView) convertView.findViewById(R.id.tvuserName);
-            vh.tvBody = (LinkifiedTextView) convertView.findViewById(R.id.tvBody);
+            vh.tvBody = (TextView) convertView.findViewById(R.id.tvBody);
             vh.tvReply = (TextView) convertView.findViewById(R.id.tvReply);
             vh.tvProfileName = (TextView) convertView.findViewById(R.id.tvProfileName);
             vh.tvLapseTime = (TextView) convertView.findViewById(R.id.tvLapseTime);
@@ -104,12 +100,12 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         vh.tvLapseTime.setText(tweet.getCreatedAt());
         vh.ivProfileImage.setImageResource(android.R.color.transparent);
         vh.tvRetweets.setText(retweets);
-        if(tweet.getRetweeted().contains("true")) {
+        if(tweet.getRetweeted() != null && tweet.getRetweeted().contains("true")) {
             vh.tvRetweets.setCompoundDrawablesWithIntrinsicBounds(R.drawable.retweet_blue_small, 0, 0, 0);
         } else {
             vh.tvRetweets.setCompoundDrawablesWithIntrinsicBounds(R.drawable.retweet, 0, 0, 0);
         }
-        if(tweet.getFavorited().contains("true")) {
+        if(tweet.getFavorited() != null && tweet.getFavorited().contains("true")) {
             vh.tvFavorites.setCompoundDrawablesWithIntrinsicBounds(R.drawable.star_yellow_small, 0, 0, 0);
         } else {
             vh.tvFavorites.setCompoundDrawablesWithIntrinsicBounds(R.drawable.star, 0, 0, 0);
@@ -136,7 +132,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         String biggerImage = tweet.getUser().getProfileImageUrl().replace("_normal.", "_bigger.");
         Picasso.with(getContext()).load(biggerImage).into(vh.ivProfileImage);
 
-        if (tweet.getMedia().getMedia_id() > 0) {
+        if (tweet.getMedia() != null && tweet.getMedia().getMedia_id() > 0) {
             vh.ivMediaImage.setEnabled(true);
             Picasso.with(getContext()).load(tweet.getMedia().getMedia_url()).resize(280, 141).centerCrop().into(vh.ivMediaImage);
         } else { vh.ivMediaImage.setEnabled(false); }

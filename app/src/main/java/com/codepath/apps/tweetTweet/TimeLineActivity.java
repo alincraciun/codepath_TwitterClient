@@ -1,29 +1,20 @@
 package com.codepath.apps.tweetTweet;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.activeandroid.ActiveAndroid;
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.tweetTweet.fragments.HomeTimelineFragment;
 import com.codepath.apps.tweetTweet.fragments.MentionsTimeLineFragment;
-import com.codepath.apps.tweetTweet.fragments.TweetsListFragment;
 import com.codepath.apps.tweetTweet.models.Tweet;
 import com.codepath.apps.tweetTweet.utils.SmartFragmentStatePagerAdapter;
 
@@ -33,7 +24,7 @@ public class TimeLineActivity extends AppCompatActivity {
     private static final int COMPOSE_REQUEST = 100;
     private SmartFragmentStatePagerAdapter adapterViewPager;
     ViewPager viewPager;
-    TweetsListFragment listFragment;
+    HomeTimelineFragment listFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +32,8 @@ public class TimeLineActivity extends AppCompatActivity {
         //ActiveAndroid.initialize(this);
         setContentView(R.layout.activity_time_line);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+        adapterViewPager = new TweetsPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapterViewPager);
 
         PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         pagerSlidingTabStrip.setViewPager(viewPager);
@@ -72,7 +64,10 @@ public class TimeLineActivity extends AppCompatActivity {
                 Intent i = new Intent(this, ComposeMessageActivity.class);
                 this.startActivityForResult(i, COMPOSE_REQUEST);
                 break;
-
+            case R.id.action_search:
+                Intent si = new Intent(this, SearchActivity.class);
+                startActivity(si);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -95,8 +90,10 @@ public class TimeLineActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK && requestCode == COMPOSE_REQUEST) {
-            listFragment = (TweetsListFragment) adapterViewPager.getRegisteredFragment(0);
-            listFragment.addTweet(Tweet.newTweetFromMessage(data.getStringExtra("newMessage")));
+            listFragment = (HomeTimelineFragment) adapterViewPager.getRegisteredFragment(0);
+            Tweet tweet = Tweet.newTweetFromMessage(data.getStringExtra("newMessage"));
+            listFragment.pushTweet(tweet);
+            adapterViewPager.notifyDataSetChanged();
         }
     }
 

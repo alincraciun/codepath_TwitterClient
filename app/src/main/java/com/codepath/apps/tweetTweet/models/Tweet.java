@@ -257,6 +257,9 @@ public class Tweet implements Parcelable {
         tweet.setId(randomnLong.nextLong());
         tweet.setRetweet_count(0);
         tweet.setUser(user.currentUser());
+        tweet.setRetweeted("false");
+        tweet.setFavourites_count(0);
+        tweet.setFavorited("false");
 
         return tweet;
     }
