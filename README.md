@@ -8,31 +8,32 @@ Time spent: **28** hours spent in total
 
 The following **required** functionality is completed:
 
-* [x]	User can **sign in to Twitter** using OAuth login
-* [x]	User can **view tweets from their home timeline**
-  * [x] User is displayed the username, name, and body for each tweet
-  * [x] User is displayed the [relative timestamp](https://gist.github.com/nesquena/f786232f5ef72f6e10a7) for each tweet "8m", "7h"
-  * [x] User can view more tweets as they scroll with [infinite pagination](http://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews). Number of tweets is unlimited.
-    However there are [Twitter Api Rate Limits](https://dev.twitter.com/rest/public/rate-limiting) in place.
-* [x] User can **compose and post a new tweet**
-  * [x] User can click a “Compose” icon in the Action Bar on the top right
-  * [x] User can then enter a new tweet and post this to twitter
-  * [x] User is taken back to home timeline with **new tweet visible** in timeline
+* [x] The app includes **all required user stories** from Week 3 Twitter Client
+* [x] User can **switch between Timeline and Mention views using tabs**
+  * [x] User can view their home timeline tweets.
+  * [x] User can view the recent mentions of their username.
+* [x] User can navigate to **view their own profile**
+  * [x] User can see picture, tagline, # of followers, # of following, and tweets on their profile.
+* [x] User can **click on the profile image** in any tweet to see **another user's** profile.
+ * [x] User can see picture, tagline, # of followers, # of following, and tweets of clicked user.
+ * [x] Profile view includes that user's timeline
+* [x] User can [infinitely paginate](http://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews) any of these timelines (home, mentions, user) by scrolling to the bottom
 
 The following **optional** features are implemented:
 
-* [x] User can **see a counter with total number of characters left for tweet** on compose tweet page
-* [x] User can **click a link within a tweet body** on tweet details view. The click will launch the web browser with relevant page opened.
-* [x] User can **pull down to refresh tweets timeline**
-* [x] User can **open the twitter app offline and see last loaded tweets**. Persisted in SQLite tweets are refreshed on every application launch. While "live data" is displayed when app can get it from Twitter API, it is also saved for use in offline mode.
-* [x] User can tap a tweet to **open a detailed tweet view**
-* [x] User can **select "reply" from detail view to respond to a tweet**
-* [x] Improve the user interface and theme the app to feel "twitter branded"
+* [ ] User can view following / followers list through the profile
+* [x] Implements robust error handling, [check if internet is available](http://guides.codepath.com/android/Sending-and-Managing-Network-Requests#checking-for-network-connectivity), handle error cases, network failures
+* [x] When a network request is sent, user sees an [indeterminate progress indicator](http://guides.codepath.com/android/Handling-ProgressBars#progress-within-actionbar)
+* [x] User can **"reply" to any tweet on their home timeline**
+  * [x] The user that wrote the original tweet is automatically "@" replied in compose
+* [x] User can click on a tweet to be **taken to a "detail view"** of that tweet
+ * [x] User can take favorite (and unfavorite) or retweet actions on a tweet
+* [x] Improve the user interface and theme the app to feel twitter branded
+* [x] User can **search for tweets matching a particular query** and see results
 
 The following **bonus** features are implemented:
 
-* [ ] User can see embedded image media within the tweet detail view
-* [ ] Compose tweet functionality is build using modal overlay
+* [ ] User can view their direct messages (or send new ones)
 
 The following **additional** features are implemented:
 
@@ -42,25 +43,21 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-* User can login to Twitter, view tweets from their home timeline, user info is displayed along post lapse time. User can view more tweets as they scroll, to refresh use screen pull down. A detailed view screen is displayed when a tweet item is clicked. 
+* User can **switch between Timeline and Mention views using tabs**, User can navigate to **view their own profile**, User can **click on the profile image** in any tweet to see **another user's** profile, Users can infinetely paginate.
 
-<img src='raw/superPics_userStory1.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='raw/superPics_userStoryW21.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-* User can compose a tweet and see the number of characters available for submit. After submit message can be seen on the home timeline screen.
+* When a network request is sent, user sees an indeterminate progress indicator. User can "reply" to any tweet on their home timeline user that wrote the original tweet is automatically "@" replied in compose
 
-<img src='raw/superPics_userStory2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='raw/superPics_userStoryW22.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-<img src='raw/superPics_userStory20.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+* User can click on a tweet to be **taken to a "detail view"** of that tweet, can take favorite (and unfavorite) or retweet actions on a tweet, can **search for tweets matching a particular query** and see results
 
+<img src='raw/superPics_userStoryW23.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-* User can reply to a message and view reply in home timeline.
+* Error handling
 
-<img src='raw/superPics_userStory3.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-* User can view last saved messaged when network is not available.
-
-<img src='raw/superPics_userStory4.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
+<img src='raw/superPics_userStoryW24.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
