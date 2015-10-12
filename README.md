@@ -1,8 +1,8 @@
-# Project 3 - *Simple Twitter Client*
+# Project 4 - *Simple Twitter Client*
 
 **Tweet a Twitter** is an android app that allows a user to view his Twitter timeline and post a new tweet. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
 
-Time spent: **28** hours spent in total
+Time spent: **24** hours spent in total
 
 ## User Stories
 
@@ -54,10 +54,11 @@ Here's a walkthrough of implemented user stories:
 * User can click on a tweet to be **taken to a "detail view"** of that tweet, can take favorite (and unfavorite) or retweet actions on a tweet, can **search for tweets matching a particular query** and see results
 
 <img src='raw/superPics_userStoryW23.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='raw/superPics_userStoryW231.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 * Error handling
 
-<img src='raw/superPics_userStoryW24.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='raw/superPics_userStoryW241.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
