@@ -68,6 +68,7 @@ public class UserTimeLineFragment extends TweetsListFragment {
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     Toast.makeText(getContext(), Utilities.parseAPIError(errorResponse), Toast.LENGTH_SHORT).show();
                     Log.d("onFailure DEBUG:: ", errorResponse.toString());
+                    hideProgressBar();
                 }
             });
         }

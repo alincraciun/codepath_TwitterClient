@@ -67,7 +67,7 @@ public class Utilities {
                 = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         //return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
-        return true; //activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+        return activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI;
     }
 
     public static String parseAPIError(JSONObject error) {
