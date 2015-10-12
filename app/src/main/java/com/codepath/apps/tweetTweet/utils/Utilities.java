@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -34,8 +35,12 @@ public class Utilities {
         try{
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.ENGLISH);
             Date parsedDate = dateFormat.parse(timestamp);
+            TimeZone tz1 = TimeZone.getTimeZone("GMT");
+            TimeZone tz2 = TimeZone.getTimeZone("America/Los_Angeles");
             Timestamp time = new java.sql.Timestamp(parsedDate.getTime());
-            relativeTimeSpan = DateUtils.getRelativeTimeSpanString(time.getTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+            relativeTimeSpan = DateUtils.getRelativeTimeSpanString(time.getTime() + tz1.getRawOffset() + tz1.getDSTSavings() - tz2.getDSTSavings(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+
+
         }catch(Exception e){
             e.printStackTrace();
         }

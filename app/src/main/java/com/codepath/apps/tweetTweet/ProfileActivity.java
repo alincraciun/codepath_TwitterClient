@@ -77,7 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
         tvName.setText(user.getName());
         tvTagline.setText(Html.fromHtml(user.getTagline()));
         if(user.getFollowersCount() <= 1)
-            tvFollowers.setText(Html.fromHtml("<b><font color=\"#000000\">" + Utilities.shortDigits(user.getFollowersCount()) + "</font></b><br/>" + R.string.follower));
+            tvFollowers.setText(Html.fromHtml("<b><font color=\"#000000\">" + Utilities.shortDigits(user.getFollowersCount()) + "</font></b><br/>" + getString(R.string.follower)));
         else
             tvFollowers.setText(Html.fromHtml("<b><font color=\"#000000\">" + Utilities.shortDigits(user.getFollowersCount()) + "</font></b><br/>" + getString(R.string.followers)));
         tvFollowing.setText(Html.fromHtml("<b><font color=\"#000000\">" + Utilities.shortDigits(user.getFollowingsCount()) + "</font></b><br/>" + getString(R.string.following)));

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.activeandroid.ActiveAndroid;
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.tweetTweet.fragments.HomeTimelineFragment;
 import com.codepath.apps.tweetTweet.fragments.MentionsTimeLineFragment;
@@ -29,7 +30,7 @@ public class TimeLineActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //ActiveAndroid.initialize(this);
+        ActiveAndroid.initialize(this);
         setContentView(R.layout.activity_time_line);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapterViewPager = new TweetsPagerAdapter(getSupportFragmentManager());

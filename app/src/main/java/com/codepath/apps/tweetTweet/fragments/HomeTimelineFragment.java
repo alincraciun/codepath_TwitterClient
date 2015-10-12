@@ -50,7 +50,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
                 public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                     if (refreshData) {
                         clearAll();
-                        //dbRefresh = true;
+                        dbRefresh = true;
                     }
                     addAll(Tweet.fromJSONArray(json, dbRefresh));
                     hideProgressBar();
